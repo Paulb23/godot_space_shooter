@@ -138,6 +138,14 @@ func weapon_shoot():
 		shoot_bullet(Vector2(get_pos().x, get_pos().y + 10), Vector2(get_pos().x + 60, get_pos().y + 10), 200)
 
 
+######################
+#  Handles Powerups  #
+######################
+func power_up(powerup_type):
+	if (int(powerup_type) == 0):
+		switch_weapon(WEAPON_TRIPLE)
+		
+
 #####################
 #   fires a bullet  #
 #####################
