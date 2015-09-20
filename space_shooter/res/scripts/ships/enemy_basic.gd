@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var bullet = load("res://res/scenes/projectiles/bullet.scn")
+var powerup = load("res://res/scenes/power-up/power-up.scn")
 var speed = 100
 var health = 20
 var shoot_delay = 80
@@ -63,6 +64,13 @@ func _fixed_process(delta):
 			move( motion )
 	else:
 		if (!get_node("AnimationPlayer").is_playing()):
+			var rng_power = int(rand_range(0, 10))
+			if (rng_power > 6):
+				var power = powerup.instance()
+				var power_type = int(rand_range(0, power.max_powerups))
+				power.set_up(power_type)
+				power.set_pos(get_pos())
+				get_parent().add_child(power)
 			queue_free()
 
 func _ready():

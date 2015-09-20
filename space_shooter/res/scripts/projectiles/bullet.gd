@@ -28,16 +28,7 @@ func collision(body):
 		get_parent().get_node("main_camrea").shake(5, 5)
 		if (body.has_method("hit")):
 			body.hit(dmg)
-
-#func area_collision(area):
-	#if (dead == 0):
-	#	dead = 1
-	#	get_node("Area2D").queue_free()
-	#	get_node("SamplePlayer2D").play("hit")
-	#	get_node("AnimationPlayer").play("death")
-	#	get_parent().get_node("main_camrea").shake(5, 5)
-	#	if (area.has_method("hit")):
-	#		area.hit(dmg)
+			
 
 func _fixed_process(delta):
 	if (dead == 0):

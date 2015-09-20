@@ -7,11 +7,18 @@ func _fixed_process(delta):
 	get_node("sheild_bar").set_percentage(get_parent().get_current_shield_percent())
 	
 	var health = get_parent().get_current_health()
+	if (health == 3):
+		get_node("heart_3").set_frame(0)
+		get_node("heart_2").set_frame(0)
+		get_node("heart_1").set_frame(0)
 	if (health == 2):
 		get_node("heart_3").set_frame(1)
+		get_node("heart_2").set_frame(0)
+		get_node("heart_1").set_frame(0)
 	if (health == 1):
 		get_node("heart_3").set_frame(1)
 		get_node("heart_2").set_frame(1)
+		get_node("heart_1").set_frame(0)
 	if (health == 0):
 		get_node("heart_3").set_frame(1)
 		get_node("heart_2").set_frame(1)

@@ -23,10 +23,12 @@ var maxShieldHealth = 100
 var shieldHealth = 100
 var SheildRestoreDelay = 120
 var shieldRestoretRate = 1
+var max_invulnerability_timer = 100
 
 # timing varables
 var last_shoot = 0
 var last_hit = 0
+var invulnerability_timer = 0
 
 
 #####################
@@ -43,6 +45,9 @@ func _ready():
 func _fixed_process(delta):
 
 	var direction = handle_input()
+	
+	if (invulnerability_timer > 0):
+		invulnerability_timer -= 1
 	
 	if (last_shoot > 0):
 		last_shoot -= 1
@@ -62,7 +67,7 @@ func _fixed_process(delta):
 		motion = n.slide( motion ) 
 		direction = n.slide( direction )
 		move( motion )
-		
+
 	if (last_hit > 0):
 		last_hit -= 1
 	
@@ -142,8 +147,28 @@ func weapon_shoot():
 #  Handles Powerups  #
 ######################
 func power_up(powerup_type):
-	if (int(powerup_type) == 0):
+	if (powerup_type == "triple_shot"):
 		switch_weapon(WEAPON_TRIPLE)
+		
+	if (powerup_type == "double_shot"):
+		switch_weapon(WEAPON_DUAL)
+		
+	if (powerup_type == "shotgun"):
+		switch_weapon(WEAPON_SHOTGUN)
+		
+	if (powerup_type == "invulnerability"):
+		invulnerability_timer = max_invulnerability_timer
+		
+	if (powerup_type == "health_up"):
+		if (health == 3):
+			add_score(100)
+		else:
+			if (health < 0):
+				health = 1
+			else:
+				health += 1
+		
+	get_node("SamplePlayer2D").play(str("powerup_", ceil(rand_range(1, 3))))
 		
 
 #####################
@@ -163,11 +188,20 @@ func shoot_bullet(start_pos, target_pos, bull_speed):
 #   called on hit   #
 #####################
 func hit(dmg):
-	if (shieldHealth <= 0):
-		health -= 1
-	else:
-		shieldHealth -= 10
-	last_hit = SheildRestoreDelay
+	if (invulnerability_timer <= 0):
+		if (shieldHealth <= 0):
+			health -= 1
+		else:
+			shieldHealth -= 10
+		last_hit = SheildRestoreDelay
+
+
+#####################
+#    add score     #
+#####################
+func add_score(added_score):
+	score += added_score
+
 
 #####################
 #   get health      #

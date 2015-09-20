@@ -132,10 +132,10 @@ func add_score(name):
 	var score = 0
 	if (name == "enemy_basic"):
 		score = ceil(rand_range(10, 20))
-		get_node("player").score += score
+		get_node("player").add_score(score)
 	else:
 		score = 0
-		get_node("player").score += 1
+		get_node("player").add_score(1)
 	return score
  
 
