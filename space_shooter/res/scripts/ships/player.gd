@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+const joystickDeadzone = 1
+
 # types of weapons
 const WEAPON_DEFUALT = 0
 const WEAPON_DUAL = 1
@@ -89,19 +91,28 @@ func _integrate_forces(state):
 #####################
 func handle_input():
 	var direction = Vector2(0,0)
-	if ( Input.is_action_pressed("up") ):
-		direction += Vector2(0,-1)
-	if ( Input.is_action_pressed("down") ):
-		direction += Vector2(0,1)
-	if ( Input.is_action_pressed("left") ):
-		direction += Vector2(-1,0)
-	if ( Input.is_action_pressed("right") ):
-		direction += Vector2(1,0)
-	if ( Input.is_action_pressed("shoot") && last_shoot == 0):
-			weapon_shoot()
-	else:
-		if(get_node("AnimationPlayer").is_playing() == false):
-			get_node("AnimationPlayer").play("normal")
+	#if (1):
+	if (OS.get_name() == "Android"):
+		var joystick = get_parent().get_node("joystick")
+		if (abs(joystick.getDistFromCenter()) > joystickDeadzone):
+			var speedX = cos(joystick.get_angle() * (PI/180))
+			var speedY = sin(joystick.get_angle() * (PI/180))
+			direction.x = speedX
+			direction.y = speedY
+	else :
+		if ( Input.is_action_pressed("up") ):
+			direction += Vector2(0,-1)
+		if ( Input.is_action_pressed("down") ):
+			direction += Vector2(0,1)
+		if ( Input.is_action_pressed("left") ):
+			direction += Vector2(-1,0)
+		if ( Input.is_action_pressed("right") ):
+			direction += Vector2(1,0)
+		if ( Input.is_action_pressed("shoot") && last_shoot == 0):
+				weapon_shoot()
+		else:
+			if(get_node("AnimationPlayer").is_playing() == false):
+				get_node("AnimationPlayer").play("normal")
 	return direction
 
 
