@@ -91,7 +91,6 @@ func _integrate_forces(state):
 #####################
 func handle_input():
 	var direction = Vector2(0,0)
-	#if (1):
 	if (OS.get_name() == "Android"):
 		var joystick = get_parent().get_node("joystick")
 		if (abs(joystick.getDistFromCenter()) > joystickDeadzone):
@@ -99,6 +98,9 @@ func handle_input():
 			var speedY = sin(joystick.get_angle() * (PI/180))
 			direction.x = speedX
 			direction.y = speedY
+		var button = get_parent().get_node("button")
+		if (button.pressed && last_shoot == 0):
+			weapon_shoot()
 	else :
 		if ( Input.is_action_pressed("up") ):
 			direction += Vector2(0,-1)
